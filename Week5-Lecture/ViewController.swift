@@ -12,7 +12,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     var mySpecialBankNames: [String]!
     
-    var branches: [NSDictionary]! = []
+    var branches: [[String: AnyObject]]! = []
+    
+    
+    
+
+
+    
+    
     
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
@@ -23,7 +30,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse?, data: NSData?, error: NSError?) in
             
-            let dictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: [])
+//            let dictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: [])
+            
+            let dictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: []) as! [String: AnyObject]
+            let results = dictionary["results"] as! [[String: AnyObject]]
+            for listing in results {
+                self.branches.append(listing)
+            }
             
 //            self.branches = dictionary as! [NSDictionary]
             self.tableView.reloadData()
